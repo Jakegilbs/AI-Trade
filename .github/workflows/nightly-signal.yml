@@ -1,0 +1,32 @@
+name: Nightly Live Signal
+
+on:
+  schedule:
+    - cron: "45 21 * * 1-5"   # runs Mon–Fri at 21:45 UTC (adjust if you want)
+  workflow_dispatch:           # lets you run it manually from GitHub UI
+
+permissions:
+  contents: write
+
+jobs:
+  run-signal:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run live signal
+        run: |
+          python -m src.live_signal --ticker SPY --capital 25000 --threshold 0.60 --target_vol 0.08 --min_hold 3
+      - name: Commit tickets
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add models/orders_*.csv models/live_run_*.json || true
+          git commit -m "Nightly ticket" || echo "Nothing to commit"
+          git push
