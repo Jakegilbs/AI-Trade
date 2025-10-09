@@ -1,0 +1,93 @@
+iimport pandas as pd
+from pathlib import Path
+from config import Config
+from data import download_prices
+from features import make_features
+from labels import make_binary_labels
+from model import build_model, fit_model
+from backtest import split_time, proba_to_signal, pnl_curve, metrics
+
+
+def main():
+    cfg = Config()
+
+    # --- Download and prepare price data ---
+    prices = download_prices(cfg.tickers, cfg.start, cfg.end)
+    s = prices.iloc[:, 0]  # first ticker (e.g., SPY)
+
+    # --- Generate features and labels ---
+    X = make_features(s)
+    y = make_binary_labels(s, cfg.horizon)
+
+    # Align safely on shared index
+    common_index = X.index.intersection(y.index)
+    X = X.loc[common_index]
+    y = y.loc[common_index]
+
+    # --- Split into train/test by date ---
+    X_train, y_train, X_test, y_test = split_time(X, y, cfg.split_date)
+
+    # --- Build and train model ---
+    model = build_model()
+    model = fit_model(model, X_train, y_train)
+
+    # --- Predict probabilities on test set ---
+    proba = pd.Series(model.predict_proba(X_test)[:, 1], index=X_test.index, name="p_up")
+
+    # --- Convert to trading signals ---
+    signal = proba_to_signal(proba, cfg.proba_threshold)
+
+    # --- Run backtest ---
+    pnl = pnl_curve(s.reindex(signal.index), signal, cfg.tx_cost_bps, cfg.max_position)
+
+    # --- Evaluate metrics ---
+    m = metrics(y_test.reindex(proba.index), proba, signal, pnl)
+
+    print("\n=== MODEL PERFORMANCE ===")
+    for k, v in m.items():
+        print(f"{k:>15}: {v:.4f}" if isinstance(v, float) else f"{k:>15}: {v}")
+
+    total_ret = pnl['equity'].iloc[-1] - 1
+    print(f"\nTotal Return: {total_ret:.2%}")
+    print("Equity curve saved as: models/equity_curve.csv")
+
+    # --- Save artifacts ---
+    Path("models").mkdir(exist_ok=True)
+    pnl.to_csv("models/equity_curve.csv")
+
+
+if __name__ == "__main__":
+    maimpt 
+pandas as pd
+from pathlib import Path
+from config import Config
+from data import download_prices
+from features import make_features
+from labels import make_binary_labels
+from model import build_model, fit_model
+from backtest import split_time, proba_to_signal, pnl_curve, metrics
+
+def main():
+    cfg = Config()
+    prices = download_prices(cfg.tickers, cfg.start, cfg.end)
+    s = prices.iloc[:, 0]
+    X = make_features(s)
+    y = make_binary_labels(s, cfg.horizon)
+    X, y = X.align(y, join="inner")
+    X_tr, y_tr, X_te, y_te = split_time(X, y, cfg.split_date)
+
+    model = build_model()
+    model = fit_model(model, X_tr, y_tr)
+
+    proba = pd.Series(model.predict_proba(X_te)[:,1], index=X_te.index, name="p_up")
+    sig = proba_to_signal(proba, cfg.proba_threshold)
+    pnl = pnl_curve(s.reindex(sig.index), sig, cfg.tx_cost_bps, cfg.max_position)
+
+    m = metrics(y_te.reindex(proba.index), proba, sig, pnl)
+    print("=== Metrics ===")
+    for k,v in m.items():
+        print(f"{k:>14}: {v:.4f}" if isinstance(v, float) else f"{k:>14}: {v}")
+    Path("models").mkdir(exist_ok=True)
+
+if __name__ == "__main__":
+    main()

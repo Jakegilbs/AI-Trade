@@ -1,0 +1,31 @@
+{
+  "features": [
+    "close",
+    "volume",
+    "addv20",
+    "rvol",
+    "ema10",
+    "ema20",
+    "sma50",
+    "sma200",
+    "atr14",
+    "std20",
+    "std50",
+    "vol_ratio",
+    "rng60",
+    "rng30",
+    "rng15",
+    "vcp_score",
+    "pct_to_high",
+    "slope50",
+    "rs",
+    "rs_slope20",
+    "base_days_near_high",
+    "tight_close"
+  ],
+  "cv_auc_mean": 0.6454005437225203,
+  "cv_auc_std": 0.018897627776437435,
+  "start": "2018-01-01",
+  "universe": "sp500",
+  "n_symbols": 60
+}
