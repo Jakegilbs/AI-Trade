@@ -1,0 +1,15 @@
+{
+  "date": "2025-11-03",
+  "ticker": "SPY",
+  "price": 683.34,
+  "p_up": 0.501,
+  "threshold": 0.6,
+  "target_weight": 0.0509,
+  "shares_for_capital": 1,
+  "capital": 25000.0,
+  "cv_best_params": {
+    "clf__n_estimators": 300,
+    "clf__min_samples_leaf": 2,
+    "clf__max_depth": 10
+  }
+}
