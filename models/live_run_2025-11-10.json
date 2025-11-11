@@ -1,8 +1,8 @@
 {
   "date": "2025-11-10",
   "ticker": "SPY",
-  "price": 681.44,
-  "p_up": 0.5163,
+  "price": 683.0,
+  "p_up": 0.5257,
   "threshold": 0.6,
   "target_weight": 0.0,
   "shares_for_capital": 0,
