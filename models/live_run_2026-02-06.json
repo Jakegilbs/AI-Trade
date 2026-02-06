@@ -1,0 +1,15 @@
+{
+  "date": "2026-02-06",
+  "ticker": "SPY",
+  "price": 690.62,
+  "p_up": 0.4974,
+  "threshold": 0.6,
+  "target_weight": 0.196,
+  "shares_for_capital": 7,
+  "capital": 25000.0,
+  "cv_best_params": {
+    "clf__n_estimators": 600,
+    "clf__min_samples_leaf": 2,
+    "clf__max_depth": null
+  }
+}
