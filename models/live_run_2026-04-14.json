@@ -1,10 +1,10 @@
 {
   "date": "2026-04-14",
   "ticker": "SPY",
-  "price": 699.94,
-  "p_up": 0.4206,
+  "price": 701.66,
+  "p_up": 0.4179,
   "threshold": 0.6,
-  "target_weight": 0.0888,
+  "target_weight": 0.0881,
   "shares_for_capital": 3,
   "capital": 25000.0,
   "cv_best_params": {
