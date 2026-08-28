@@ -1,8 +1,8 @@
 {
   "date": "2026-08-26",
   "ticker": "SPY",
-  "price": 766.08,
-  "p_up": 0.5325,
+  "price": 771.1,
+  "p_up": 0.5396,
   "threshold": 0.6,
   "target_weight": 0.0,
   "shares_for_capital": 0,
