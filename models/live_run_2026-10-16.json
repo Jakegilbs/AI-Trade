@@ -2,13 +2,13 @@
   "date": "2026-10-16",
   "ticker": "SPY",
   "price": 763.25,
-  "p_up": 0.6606,
+  "p_up": 0.6733,
   "threshold": 0.6,
-  "target_weight": 0.1825,
-  "shares_for_capital": 5,
+  "target_weight": 0.1987,
+  "shares_for_capital": 6,
   "capital": 25000.0,
   "cv_best_params": {
-    "clf__n_estimators": 300,
+    "clf__n_estimators": 600,
     "clf__min_samples_leaf": 2,
     "clf__max_depth": null
   }
